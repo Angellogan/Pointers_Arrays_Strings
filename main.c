@@ -22,23 +22,175 @@ void foo()
 
 }
 
+
+//Check NULL pointers
+
+int* check_passNullPointers(int *arr,int size, int val)
+{
+
+    if(arr!=NULL)
+    {
+        for(int i=0;i<size;i++)
+        {
+            arr[i]=val;
+
+        }
+
+    }
+
+   return arr;
+}
+
+
+//Passing Pointer to Pointer
+void passPointerToPointer(int **arr,int size,int val)
+{
+   //
+
+    *arr = (int *)malloc(size*sizeof(int));
+    if(*arr!=NULL)
+    {
+
+        for(int i=0;i<size;i++)
+        {
+            *(*arr + i) = val;
+
+        }
+    }
+
+}
+
+
+void safeFree(void **pp)
+{
+
+    if(pp!=NULL && *pp!=NULL)
+    {
+
+        free(*pp);
+        *pp = NULL;
+    }
+
+
+}
+//Passing Pointer
+void passPointerToArray(int *arr,int size,int val)
+{
+
+    arr = (int *)malloc(size*sizeof(int)); // arr holds the address from heap
+
+    // The array allocated on the heap is never freed if we dont save the returned heap address as
+    //arr is a local variable and this functions stack frame is popped off when the function returns
+
+    // write yourown free function
+
+
+
+
+}
+//Pointers to Static data - static data persists betwen the function calls
+int* returnPointerToStaticData()
+{
+
+    static int arr[5];
+
+    return arr;
+
+}
+
+
 //Pointers to Local data
-void pointersToLocalData()
+int* returnpointersToLocalData()
 {
+    int arr[5];
+
+    for(int i=0;i<5;i++)
+    {
+        arr[i] =10;
+    }
 
 
+    printf("\n\n ********** returnpointersToLocalData() *****************\n\n");
+    for(int i=0;i<5;i++)
+    {
+        printf("%d\n",arr[i]);
+    }
 
+    return arr; //returning Local data on stack i.e the data willbe popped off after this function
+
+}
+
+
+void check_returnPointerToLocalData()
+{
+    int * arr = returnpointersToLocalData(); //accessing the data pointed to results in SEGMENTATION FAULT
+
+
+//    printf("\n\n ********** After calling returnpointersToLocalData ***********\n\n");
+
+//    for(int i=0;i<5;i++)
+//    {
+//        printf("%d\n",arr[i]);
+//    }
+
+    printf("\n\n ********** returning the static data ***********\n\n");
+
+    int *sArr = returnPointerToStaticData();
+    //static data initializes the data to 0
+
+    for(int i=0;i<5;i++)
+    {
+        printf("%d\n",sArr[i]);// 0 0 0 0 0
+    }
+
+    int* vector = (int*)malloc(5 * sizeof(int));
+
+    check_passNullPointers(vector,5,0);
+
+
+}
+//Returning Pointer -- return object from a function
+int* allocaHeapteArray(int size, int value)
+{
+    printf("\n\n Allocating the heap memory arr\n\n ");
+    int *arr =(int *)malloc(size * sizeof(int));
+
+    for(int i=0;i<size;i++)
+    {
+        arr[i] = value;
+    }
+
+    return arr;
 
 
 }
 
-//Returning Pointer
-int* returningPointer()
+void memAllocationDeallocation_Heap()
 {
+    int size=5;
+    int val =10;
+    int * arr = allocaHeapteArray(size,0);
+
+    for(int i =0;i<size;i++)
+    {
+
+        arr[i] = val++;
+    }
+
+    printf("\n\n Array values after the call allocateArray()\n\n ");
+
+    for(int i =0;i<size;i++)
+    {
+
+        printf("%d\n",arr[i]);
+    }
 
 
+     printf("\n\n Deallocating the heap memory arr\n\n ");
 
 }
+
+
 
 //Pass pointer to a constant and passing pointer to simple pointer
 void passingAddressOfConstants(const int *num1,int *num2)
@@ -496,6 +648,16 @@ int main()
     passingAddressOfConstants(&limit,&limit); // the const int is changed via int pointer. const qualifier is discarded
     printf("\n********* After calling  passingAddressOfConstants(limit,limit) *********\n\n");
     printf("limit : %p [%d] \t age : %p [%d]\n",&limit,limit,&limit,limit);
+
+
+    //memAllocationDeallocation_Heap();
+
+    check_returnPointerToLocalData();
+
+    int *vector2 = NULL;
+
+    passPointerToPointer(&vector2,5,0);
+
 
     return 0;
 }
