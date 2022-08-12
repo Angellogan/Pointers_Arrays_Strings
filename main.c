@@ -22,6 +22,85 @@ void foo()
 
 }
 
+//Pointers to Local data
+void pointersToLocalData()
+{
+
+
+
+
+
+}
+
+//Returning Pointer
+int* returningPointer()
+{
+
+
+
+}
+
+//Pass pointer to a constant and passing pointer to simple pointer
+void passingAddressOfConstants(const int *num1,int *num2)
+{
+
+   // *num1 = 49; // Compilation Error as the data is Read-Only
+    *num2 =98;
+
+}
+
+//Pass data with values
+
+void swapWithData(int Num1, int Num2)
+{
+    int temp;
+
+    printf("\n\n ***********Passing  data with values ************** \n\n");
+
+    printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",&Num1,Num1,&Num2,Num2);
+
+     temp = Num1;
+    Num1 = Num2;
+    Num2 = temp;
+
+   printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",&Num1,Num1,&Num2,Num2);
+
+   Num1 =37;
+   Num2 = 56;
+
+
+   //change the original data
+   printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",&Num1,Num1,&Num2,Num2);
+
+
+}
+/* Passing Data with  Pointer*/
+void swapWithPointer(int *pNum1, int *pNum2)
+{
+    int temp;
+
+
+    printf("\n\n ***********Passing  data with Pointers ************** \n\n");
+
+    printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",pNum1,*pNum1,pNum2,*pNum2);
+
+    temp = *pNum1;
+    *pNum1 = *pNum2;
+    *pNum2 = temp;
+
+   printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",pNum1,*pNum1,pNum2,*pNum2);
+
+   *pNum1 =37;
+   *pNum2 = 56;
+
+    //change the original data
+   printf("pNum1: %p [%d] \t pNum2 : %p [%d]\n",pNum1,*pNum1,pNum2,*pNum2);
+
+
+}
+
+
+/* Passing and Returning by Pointer*/
 void funcPointers()
 {
 
@@ -162,26 +241,11 @@ int dynamicMemoryAllocation()
   *p2 =10;
   printf("\n\n p1 address %p : %d\n",p2,*p2);
 
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
 
 
 void constPointersFunc()
 {
-
 
     printf("\n\n\n********* CONSTANT POINTERS  **********+\n\n");
 
@@ -255,14 +319,7 @@ void constPointersFunc()
 
   //  cicPtr = &result;// Const Pointer  and cannot be changed ERROR
 
-
-
-
-
 }
-
-
-
 
 int main()
 {
@@ -318,13 +375,7 @@ int main()
     ptr3 = &total;
     *ptr3 = 0; // 0 here is integer value
 
-
-
-
     /* Pointers to Void  */
-
-
-
 
     int result =100;
     int *rPtr;
@@ -339,10 +390,6 @@ int main()
 
     printf("Size of void pointer = %zu\n",sizeof (void *));
     printf("Size of void  = %zu\n",sizeof (void )); //Illegal in c++ but in c sizeof(void) is 1
-
-
-
-
 
     /*Pointer sizes and Types*/
 
@@ -398,15 +445,57 @@ int main()
      p1 = vector+1;
      p2 = vector+2;
 
-     printf("p2 -p0 : %d\n",p2-p0);
-    printf("*p2 -*p0 : %d\n",*p2-*p0);
+     printf("p2 -p0 : %lu\n",p2-p0);
+     printf("*p2 -*p0 : %lu\n",*p2-*p0);
 
     /*Comparing pointers*/
 
    // constPointersFunc();
 
-    dynamicMemoryAllocation();
+    //dynamicMemoryAllocation();
 
+    int num11 =10;
+    int num22 =20;
+
+    printf("\n\n *********** Original Data ************\n\n");
+
+    printf("Num11 : %p [%d] \t Num11 : %p [%d]\n",&num11,num11,&num22,num22);
+
+    swapWithPointer(&num11,&num22);
+
+    printf("Num11 : %p [%d] \t Num11 : %p [%d]\n",&num11,num11,&num22,num22);
+
+    int dNum1 =50;
+    int dNum2=75;
+
+     printf("\n\n *********** Original Data ************\n\n");
+
+     printf("Num11 : %p [%d] \t Num11 : %p [%d]\n",&dNum1,dNum1,&dNum2,dNum2);
+
+    swapWithData(dNum1,dNum2);
+
+    printf("Num11 : %p [%d] \t Num11 : %p [%d]\n",&dNum1,dNum1,&dNum2,dNum2);
+
+
+
+    const int limit =100;
+    int age =65;
+
+
+    printf("\n********* Before calling  passingAddressOfConstants() *********\n\n");
+    printf("limit : %p [%d] \t age : %p [%d]\n",&limit,limit,&age,age);
+
+
+    passingAddressOfConstants(&limit,&age);
+
+    printf("\n********* After calling  passingAddressOfConstants() *********\n\n");
+    printf("limit : %p [%d] \t age : %p [%d]\n",&limit,limit,&age,age);
+
+
+
+    passingAddressOfConstants(&limit,&limit); // the const int is changed via int pointer. const qualifier is discarded
+    printf("\n********* After calling  passingAddressOfConstants(limit,limit) *********\n\n");
+    printf("limit : %p [%d] \t age : %p [%d]\n",&limit,limit,&limit,limit);
 
     return 0;
 }
